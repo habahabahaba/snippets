@@ -1,6 +1,9 @@
 // 3rd party:
+import { db } from '@/db';
 // Redux RTK:
 // Store:
+// Next:
+import { redirect } from 'next/navigation';
 // React:
 // Context:
 // Components:
@@ -10,9 +13,31 @@ import { FC } from 'react';
 interface NewSnippetPageProps {}
 
 const NewSnippetPage: FC<NewSnippetPageProps> = () => {
+  // Server action:
+  async function addSnippet(formData: FormData) {
+    // Declaring server action:
+    'use server';
+
+    // Validating inputs:
+    const title = formData.get('title') as string;
+    const code = formData.get('code') as string;
+
+    // Creating new record in the database:
+    const snippet = await db.snippet.create({
+      data: {
+        title,
+        code,
+      },
+    });
+    console.log(snippet);
+
+    // Redirecting to the homepage:
+    redirect('/');
+  }
+
   // JSX:
   return (
-    <form>
+    <form action={addSnippet}>
       <h3 className='font-bold m-3'>Add Snippet</h3>
       <div className='flex flex-col gap-4'>
         <div className='flex gap-4'>
