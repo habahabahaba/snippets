@@ -19,6 +19,9 @@ const SnippetShowPage: FC<SnippetShowPageProps> = async ({
   params,
   searchParams,
 }) => {
+  //   await new Promise((r) => {
+  //     setTimeout(r, 2000);
+  //   });
   console.log(params, searchParams);
   //   Fetching the snippet:
   const snippet = await db.snippet.findFirst({
