@@ -4,27 +4,22 @@ import { db } from '@/db';
 // Store:
 // Next:
 import { notFound } from 'next/navigation';
-import Link from 'next/link';
-import { redirect } from 'next/navigation';
 // React:
 // Context:
 // Components:
 // CSS:
 // Types, interfaces and enumns:
 import { FC } from 'react';
-interface SnippetShowPageProps {
+interface SnippetEditPageProps {
   params: { id: string };
   searchParams?: any;
 }
 
-const SnippetShowPage: FC<SnippetShowPageProps> = async ({
+const SnippetEditPage: FC<SnippetEditPageProps> = async ({
   params,
   searchParams,
 }) => {
-  //   await new Promise((r) => {
-  //     setTimeout(r, 2000);
-  //   });
-  console.log(params, searchParams);
+  const id = +params.id;
   //   Fetching the snippet:
   const snippet = await db.snippet.findFirst({
     where: { id: +params.id },
@@ -37,15 +32,10 @@ const SnippetShowPage: FC<SnippetShowPageProps> = async ({
   return (
     <div>
       <div className='flex m-4 justify-between items-start '>
-        <h1 className='text-xl font-bold'>Editing {snippet.title}</h1>
+        <h1 className='text-xl font-bold'>{snippet.title}</h1>
         <div className='flex  gap-3'>
-          <Link
-            href={`/snippets/${snippet.id}/edit`}
-            className='p-2 border rounded'
-          >
-            Edit
-          </Link>
-          <button className='p-2 border rounded'>Delete</button>
+          <button className='p-2 border rounded'>Save</button>
+          <button className='p-2 border rounded'>Cancel</button>
         </div>
       </div>
       <pre className='p-3 border rounded bg-gray-200 border-gray-200'>
@@ -55,4 +45,4 @@ const SnippetShowPage: FC<SnippetShowPageProps> = async ({
   );
 };
 
-export default SnippetShowPage;
+export default SnippetEditPage;
