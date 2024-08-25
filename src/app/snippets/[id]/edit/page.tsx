@@ -33,15 +33,8 @@ const SnippetEditPage: FC<SnippetEditPageProps> = async ({
 
   // JSX:
   return (
-    <div className='flex flex-col justify-between gap-3'>
-      <div className='flex m-4 justify-between items-start '>
-        <h1 className='text-xl font-bold'>{snippet.title}</h1>
-      </div>
+    <div>
       <SnippetEditForm snippet={snippet} />
-      <div className='flex  gap-3'>
-        <button className='p-2 border rounded'>Save</button>
-        <button className='p-2 border rounded'>Cancel</button>
-      </div>
     </div>
   );
 };
