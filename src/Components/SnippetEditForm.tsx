@@ -6,7 +6,7 @@ import { Editor } from '@monaco-editor/react';
 // Store:
 // Next:
 // React:
-import { useState } from 'react';
+import { useState, useRef } from 'react';
 // Context:
 // Components:
 // CSS:
@@ -24,9 +24,17 @@ const SnippetEditForm: FC<SnippetEditFormProps> = ({ snippet }) => {
   // State:
   const [code, setCode] = useState<string>(snippet.code);
   // Handlers:
+  // For debouncing:
+  const timeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   function handleEditorChange(value: string = '') {
-    console.log('From editor onChange: ', value);
-    setCode(value);
+    // Debouncing:
+    if (timeoutRef.current) {
+      clearTimeout(timeoutRef.current);
+    }
+    timeoutRef.current = setTimeout(() => {
+      //   console.log('From editor onChange: ', value);
+      setCode(value);
+    }, 600);
   }
   // JSX:
   return (
