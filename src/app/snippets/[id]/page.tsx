@@ -5,7 +5,8 @@ import { db } from '@/db';
 // Next:
 import { notFound } from 'next/navigation';
 import Link from 'next/link';
-import { redirect } from 'next/navigation';
+// Actions:
+import * as actions from '@/actions';
 // React:
 // Context:
 // Components:
@@ -33,11 +34,14 @@ const SnippetShowPage: FC<SnippetShowPageProps> = async ({
   // If there's no such snippet:
   if (!snippet) return notFound();
 
+  // Actions:
+  const deleteSnippetAction = actions.deleteSnippet.bind(null, +snippet.id);
+
   // JSX:
   return (
     <div>
       <div className='flex m-4 justify-between items-start '>
-        <h1 className='text-xl font-bold'>Editing {snippet.title}</h1>
+        <h1 className='text-xl font-bold'> {snippet.title}</h1>
         <div className='flex  gap-3'>
           <Link
             href={`/snippets/${snippet.id}/edit`}
@@ -45,7 +49,9 @@ const SnippetShowPage: FC<SnippetShowPageProps> = async ({
           >
             Edit
           </Link>
-          <button className='p-2 border rounded'>Delete</button>
+          <form action={deleteSnippetAction}>
+            <button className='p-2 border rounded'>Delete</button>
+          </form>
         </div>
       </div>
       <pre className='p-3 border rounded bg-gray-200 border-gray-200'>

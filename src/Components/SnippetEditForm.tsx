@@ -6,6 +6,8 @@ import { Editor } from '@monaco-editor/react';
 // Redux RTK:
 // Store:
 // Next:
+import { redirect } from 'next/navigation';
+// Actions:
 import * as actions from '@/actions';
 // React:
 import { useState } from 'react';
@@ -22,7 +24,7 @@ interface SnippetEditFormProps {
 interface SnippetEditFormError {
   title: Boolean;
 }
-const editorOptions = { minimap: { enabled: false } };
+const editorOptions = { minimap: { enabled: false }, fontSize: 15 };
 
 const SnippetEditForm: FC<SnippetEditFormProps> = ({ snippet }) => {
   // State:
@@ -47,7 +49,6 @@ const SnippetEditForm: FC<SnippetEditFormProps> = ({ snippet }) => {
     console.log('From editor onChange: ', value);
     setCode(value);
   }
-
   // For submit:
   const handleSubmit: FormEventHandler<HTMLFormElement> = (ev) => {
     ev.preventDefault();
@@ -64,7 +65,7 @@ const SnippetEditForm: FC<SnippetEditFormProps> = ({ snippet }) => {
 
   //   Actions:
   const submitSnippetAction = actions.editSnippet.bind(null, {
-    id: snippet.id,
+    id: +snippet.id,
     title,
     code,
   });
@@ -75,6 +76,7 @@ const SnippetEditForm: FC<SnippetEditFormProps> = ({ snippet }) => {
       className='flex flex-col justify-between gap-3 pt-3'
       onSubmit={handleSubmit}
     >
+      <h1 className='text-xl font-bold'>Editing: </h1>
       <input
         type='text'
         placeholder='Please, add a title...'
@@ -100,7 +102,14 @@ const SnippetEditForm: FC<SnippetEditFormProps> = ({ snippet }) => {
         <button className='p-2 border rounded' type='submit'>
           Save
         </button>
-        <button className='p-2 border rounded'>Cancel</button>
+        <button
+          className='p-2 border rounded'
+          onClick={() => {
+            redirect(`/snippets/${snippet.id}`);
+          }}
+        >
+          Cancel
+        </button>
       </div>
     </form>
   );
