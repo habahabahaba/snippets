@@ -47,8 +47,8 @@ const NewSnippetPage: FC<NewSnippetPageProps> = () => {
           <input
             type='text'
             name='title'
-            className='border rounded p-2 w-full'
             id='title'
+            className='border rounded p-2 w-full'
           />
         </div>
         <div className='flex gap-4'>
@@ -57,8 +57,8 @@ const NewSnippetPage: FC<NewSnippetPageProps> = () => {
           </label>
           <textarea
             name='code'
-            className='border rounded p-2 w-full'
             id='code'
+            className='border rounded p-2 w-full'
           />
         </div>
         <button type='submit' className='rounded p-2 bg-blue-200'>

@@ -1,4 +1,5 @@
 'use client';
+
 // 3rd party:
 // Monaco:
 import { Editor } from '@monaco-editor/react';
@@ -7,59 +8,83 @@ import { Editor } from '@monaco-editor/react';
 // Next:
 import * as actions from '@/actions';
 // React:
-import { useState, useRef } from 'react';
+import { useState } from 'react';
 // Context:
 // Components:
 // Hooks:
-import { useDebouncedInput } from '@/hooks';
 // CSS:
 // Types, interfaces and enumns:
-import type { FC } from 'react';
+import type { FC, FormEventHandler } from 'react';
 import type { Snippet } from '@prisma/client';
-
 interface SnippetEditFormProps {
   snippet: Snippet;
 }
-
+interface SnippetEditFormError {
+  title: Boolean;
+}
 const editorOptions = { minimap: { enabled: false } };
 
 const SnippetEditForm: FC<SnippetEditFormProps> = ({ snippet }) => {
-  //   // State:
-  //   const [title, setTitle] = useState<string>(snippet.title);
-  //   const [code, setCode] = useState<string>(snippet.code);
+  // State:
+  const [error, setError] = useState<SnippetEditFormError>({ title: false });
+  const [title, setTitle] = useState<string>(snippet.title);
+  const [code, setCode] = useState<string>(snippet.code);
 
-  //   // Handlers:
-  //   // For debouncing:
-  //   const codeTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
-  //   const titleTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
-  //   //   For code change:
-  //   function handleEditorChange(value: string = '') {
-  //     // Debouncing:
-  //     if (codeTimeoutRef.current) {
-  //       clearTimeout(codeTimeoutRef.current);
-  //     }
-  //     codeTimeoutRef.current = setTimeout(() => {
-  //       //   console.log('From editor onChange: ', value);
-  //       setCode(value);
-  //     }, 600);
-  //   }
+  const titleClass = 'p-1 border-gray-300 border-2 rounded';
+  const titleErrorClass = 'p-1 border-red-600 border-2 rounded';
 
-  const [title, handleTitleChange] = useDebouncedInput(snippet.title);
-  const [code, handleCodeChange] = useDebouncedInput(snippet.code);
+  // Handlers:
+  //   For title change:
+  function handleTitleChange(value: string = '') {
+    // Resetting title error:
+    setError((current) => ({ ...current, title: false }));
+
+    console.log('From title onChange: ', value);
+    setTitle(value);
+  }
+  // For code change:
+  function handleCodeChange(value: string = '') {
+    console.log('From editor onChange: ', value);
+    setCode(value);
+  }
+
+  // For submit:
+  const handleSubmit: FormEventHandler<HTMLFormElement> = (ev) => {
+    ev.preventDefault();
+
+    // Validation:
+    const trimmed = title.trim();
+    if (!trimmed) {
+      setError((current) => ({ ...current, title: true }));
+      setTitle('');
+      return;
+    }
+    submitSnippetAction();
+  };
 
   //   Actions:
-  const editSnippetAction = actions.editSnippet.bind(null, snippet.id, code);
+  const submitSnippetAction = actions.editSnippet.bind(null, {
+    id: snippet.id,
+    title,
+    code,
+  });
+
   // JSX:
   return (
-    <form className='flex flex-col justify-between gap-3 pt-3'>
+    <form
+      className='flex flex-col justify-between gap-3 pt-3'
+      onSubmit={handleSubmit}
+    >
       <input
         type='text'
         placeholder='Please, add a title...'
         value={title}
+        name='title'
+        id='title'
         onChange={(ev) => {
           handleTitleChange(ev.target.value);
         }}
-        className=' border-red-700 border-4 rounded'
+        className={error.title ? titleErrorClass : titleClass}
       />
       <div className=''>
         <Editor
