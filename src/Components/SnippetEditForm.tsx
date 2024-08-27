@@ -15,6 +15,8 @@ import { useState } from 'react';
 // Components:
 // Hooks:
 // CSS:
+// Utils:
+import { setTWClassToError } from '@/utils';
 // Types, interfaces and enumns:
 import type { FC, FormEventHandler } from 'react';
 import type { Snippet } from '@prisma/client';
@@ -32,8 +34,8 @@ const SnippetEditForm: FC<SnippetEditFormProps> = ({ snippet }) => {
   const [title, setTitle] = useState<string>(snippet.title);
   const [code, setCode] = useState<string>(snippet.code);
 
+  // Title CSS classes
   const titleClass = 'p-1 border-gray-300 border-2 rounded';
-  const titleErrorClass = 'p-1 border-red-600 border-2 rounded';
 
   // Handlers:
   //   For title change:
@@ -79,14 +81,14 @@ const SnippetEditForm: FC<SnippetEditFormProps> = ({ snippet }) => {
       <h1 className='text-xl font-bold'>Editing: </h1>
       <input
         type='text'
-        placeholder='Please, add a title...'
+        placeholder='Please, provide a title...'
         value={title}
         name='title'
         id='title'
         onChange={(ev) => {
           handleTitleChange(ev.target.value);
         }}
-        className={error.title ? titleErrorClass : titleClass}
+        className={error.title ? setTWClassToError(titleClass) : titleClass}
       />
       <div className=''>
         <Editor
@@ -104,8 +106,10 @@ const SnippetEditForm: FC<SnippetEditFormProps> = ({ snippet }) => {
         </button>
         <button
           className='p-2 border rounded'
-          onClick={() => {
-            redirect(`/snippets/${snippet.id}`);
+          onClick={(ev) => {
+            ev.preventDefault();
+            console.log('Cancel');
+            redirect('/');
           }}
         >
           Cancel

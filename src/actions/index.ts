@@ -11,6 +11,8 @@ type snippet = {
   title: string;
   code: string;
 };
+// Utils:
+import { validStringInput } from '@/utils';
 
 export async function editSnippet(snippet: snippet) {
   const { id, title, code } = snippet;
@@ -44,4 +46,33 @@ export async function deleteSnippet(id: number) {
 
   // Navigating back to snippets page:
   redirect(`/`);
+}
+
+export async function addSnippet(
+  formState: { message: string },
+  formData: FormData
+) {
+  // Validating inputs:
+  const title = formData.get('title');
+  const code = formData.get('code');
+  const validTitle = validStringInput(
+    title,
+    'Please provide a longer title.',
+    3
+  );
+  if (typeof validTitle !== 'string') return validTitle;
+  const validCode = validStringInput(code, 'Please provide more code.', 6);
+  if (typeof validCode !== 'string') return validCode;
+
+  // Creating new record in the database:
+  const snippet = await db.snippet.create({
+    data: {
+      title: validTitle,
+      code: validCode,
+    },
+  });
+  console.log(snippet);
+
+  // Redirecting to the homepage:
+  redirect('/');
 }
