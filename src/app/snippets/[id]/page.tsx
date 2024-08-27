@@ -57,6 +57,11 @@ const SnippetShowPage: FC<SnippetShowPageProps> = async ({
       <pre className='p-3 border rounded bg-gray-200 border-gray-200'>
         <code>{snippet.code}</code>
       </pre>
+      <div className='flex  gap-3 my-4 justify-end'>
+        <Link href={`/`} className='p-2 border rounded'>
+          Back to snippets...
+        </Link>
+      </div>
     </div>
   );
 };
