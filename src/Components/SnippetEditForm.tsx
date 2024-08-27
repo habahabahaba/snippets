@@ -71,6 +71,7 @@ const SnippetEditForm: FC<SnippetEditFormProps> = ({ snippet }) => {
     title,
     code,
   });
+  const cancelEditSnippetAction = actions.cancelEditSnippet;
 
   // JSX:
   return (
@@ -108,8 +109,7 @@ const SnippetEditForm: FC<SnippetEditFormProps> = ({ snippet }) => {
           className='p-2 border rounded'
           onClick={(ev) => {
             ev.preventDefault();
-            console.log('Cancel');
-            redirect('/');
+            cancelEditSnippetAction();
           }}
         >
           Cancel

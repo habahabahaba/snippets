@@ -28,13 +28,12 @@ export async function editSnippet(snippet: snippet) {
   // Navigating back to snippets page:
   redirect(`/snippets/${id}`);
 }
-// export async function submitSnippet(
-//   id: number,
-//   code: string,
-//   formData: FormData
-// ) {
-//   console.log('editSnippet action was called.');
-// }
+export async function cancelEditSnippet(
+
+) {
+  console.log('cancelEditSnippet action was called.');
+  redirect('/')
+}
 
 export async function deleteSnippet(id: number) {
   console.log('deleteSnippet action was called.', `id: ${id}`);
