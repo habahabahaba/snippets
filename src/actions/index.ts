@@ -52,27 +52,34 @@ export async function addSnippet(
   formState: { message: string },
   formData: FormData
 ) {
-  // Validating inputs:
-  const title = formData.get('title');
-  const code = formData.get('code');
-  const validTitle = validStringInput(
-    title,
-    'Please provide a longer title.',
-    3
-  );
-  if (typeof validTitle !== 'string') return validTitle;
-  const validCode = validStringInput(code, 'Please provide more code.', 6);
-  if (typeof validCode !== 'string') return validCode;
+  try {
+    // Validating inputs:
+    const title = formData.get('title');
+    const code = formData.get('code');
+    const validTitle = validStringInput(
+      title,
+      'Please provide a longer title.',
+      3
+    );
+    if (typeof validTitle !== 'string') return validTitle;
+    const validCode = validStringInput(code, 'Please provide more code.', 6);
+    if (typeof validCode !== 'string') return validCode;
 
-  // Creating new record in the database:
-  const snippet = await db.snippet.create({
-    data: {
-      title: validTitle,
-      code: validCode,
-    },
-  });
-  console.log(snippet);
+    // Creating new record in the database:
+    const snippet = await db.snippet.create({
+      data: {
+        title: validTitle,
+        code: validCode,
+      },
+    });
+  } catch (error: unknown) {
+    if (error instanceof Error) {
+      return { message: error.message };
+    } else {
+      return { message: 'Something went wrong. We are very sorry!' };
+    }
+  }
 
   // Redirecting to the homepage:
-  redirect('/');
+  redirect('/'); // Alwayse leave outside of try/catch.
 }
