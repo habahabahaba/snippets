@@ -10,6 +10,7 @@ import Link from 'next/link';
 // CSS:
 // Types, interfaces and enumns:
 
+export const dynamic = 'force-dynamic'; // to enable page updates!!!
 export default async function Home() {
   // Fetching snippets:
   const snippets = await db.snippet.findMany();

@@ -59,7 +59,7 @@ const SnippetShowPage: FC<SnippetShowPageProps> = async ({
       </pre>
       <div className='flex  gap-3 my-6 justify-end'>
         <Link href={`/`} className='p-2 border rounded'>
-          Back to snippets...
+          Back to snippets
         </Link>
       </div>
     </div>
