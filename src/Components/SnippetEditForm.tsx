@@ -48,7 +48,7 @@ const SnippetEditForm: FC<SnippetEditFormProps> = ({ snippet }) => {
   }
   // For code change:
   function handleCodeChange(value: string = '') {
-    console.log('From editor onChange: ', value);
+    // console.log('From editor onChange: ', value);
     setCode(value);
   }
   // For submit:

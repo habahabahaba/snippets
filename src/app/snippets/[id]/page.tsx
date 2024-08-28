@@ -67,3 +67,10 @@ const SnippetShowPage: FC<SnippetShowPageProps> = async ({
 };
 
 export default SnippetShowPage;
+
+// For enabling some caching in dynamic paths:
+export async function generateStaticParams() {
+  const snippets = await db.snippet.findMany();
+
+  return snippets.map(({ id }) => ({ id: '' + id }));
+}

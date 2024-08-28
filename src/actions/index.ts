@@ -28,6 +28,8 @@ export async function editSnippet(snippet: snippet) {
 
   // Updating the homepage:
   revalidatePath('/');
+  // To purge cached snippet:
+  revalidatePath(`/snippets/${id}`);
   // Navigating back to snippets page:
   redirect(`/snippets/${id}`);
 }
