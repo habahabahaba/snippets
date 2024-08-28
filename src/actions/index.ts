@@ -5,6 +5,7 @@
 import { db } from '@/db';
 // Next:
 import { redirect } from 'next/navigation';
+import { revalidatePath } from 'next/cache';
 // Types, interfaces and enumns:
 type snippet = {
   id: number;
@@ -25,14 +26,15 @@ export async function editSnippet(snippet: snippet) {
     data: { title, code },
   });
 
+  // Updating the homepage:
+  revalidatePath('/');
   // Navigating back to snippets page:
   redirect(`/snippets/${id}`);
 }
-export async function cancelEditSnippet(
-
-) {
-  console.log('cancelEditSnippet action was called.');
-  redirect('/')
+export async function cancelEditSnippet() {
+  // console.log('cancelEditSnippet action was called.');
+  // Navigating back to snippets page:
+  redirect('/');
 }
 
 export async function deleteSnippet(id: number) {
@@ -43,6 +45,8 @@ export async function deleteSnippet(id: number) {
     where: { id },
   });
 
+  // Updating the homepage:
+  revalidatePath('/');
   // Navigating back to snippets page:
   redirect(`/`);
 }
@@ -79,6 +83,8 @@ export async function addSnippet(
     }
   }
 
+  // Updating the homepage:
+  revalidatePath('/');
   // Redirecting to the homepage:
   redirect('/'); // Alwayse leave outside of try/catch.
 }
